@@ -37,21 +37,26 @@ Enquiry.schema.post('save', function() {
 
 Enquiry.schema.methods.sendNotificationEmail = function(callback) {
   
-  var enqiury = this;
+  var enquiry = this;
   
   keystone.list('User').model.find().where('isAdmin', true).exec(function(err, admins) {
     
     if (err) return callback(err);
     
-    new keystone.Email('enquiry-notification').send({
-      to: admins,
-      from: {
-        name: 'It\'s Valentines Day',
-        email: 'contact@its-valentines-day.com'
-      },
-      subject: 'New Enquiry for It\'s Valentines Day',
-      enquiry: enqiury
-    }, callback);
+    var Email = new keystone.Email('enquiry-notification');
+
+    Email.send({
+        subject: 'New Enquiry for It\'s Valentines Day',
+        tags: 'Enquiry',
+        to: admins,
+        from: {
+          name: 'It\'s Valentines Day',
+          email: 'contact@its-valentines-day.com'
+        },
+        enquiry: enquiry
+    },function(err,info){
+        console.log(err,'Enquiry Sent',info);
+    });
     
   });
   
