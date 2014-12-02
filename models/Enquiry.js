@@ -57,7 +57,6 @@ Enquiry.schema.methods.sendNotificationEmail = function(callback) {
     },function(err,info){
         console.log(err,'Enquiry Sent',info);
     });
-    
   });
   
 };
